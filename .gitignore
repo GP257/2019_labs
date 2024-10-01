@@ -1,0 +1,6 @@
+build
+.ipynb_checkpoints
+.sconsign.dbhash
+.**.sw*
+.local
+*.HH

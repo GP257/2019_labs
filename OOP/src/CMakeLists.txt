@@ -1,0 +1,34 @@
+#Requied CMake version
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+
+option(ENABLE_TESTING "Whether or not to enable testing" OFF)
+
+#We need to add to how to find TBB which sits in the cmake dir
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
+
+#Name of our cmake project
+project(lab2 LANGUAGES CXX)
+
+#Require c++111
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+
+add_executable(draw draw.cc)
+
+#add the rules for building the C++ code
+add_subdirectory(lib)
+
+#add the rules for python binding
+add_subdirectory(python)
+
+if(ENABLE_TESTING)
+	enable_testing()
+	execute_process(COMMAND git submodule update --init --recursive --
+                        external/googletest
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+	add_subdirectory(external/googletest)	
+	add_subdirectory(testing)
+endif(ENABLE_TESTING)
+
